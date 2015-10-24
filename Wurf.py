@@ -21,3 +21,9 @@ class Wurf(object):
     def getErgebnis(self):
         self.ergebnis = Ergebnis([w.getAugenzahl() for w in spieler.getSpielerwuerfel()])
         return self.ergebnis
+
+    def getWurfnummer(self):
+        return self.nummer
+
+    def setErgebnis(self, ergebnis):
+        self.ergebnis = ergebnis
