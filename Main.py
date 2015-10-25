@@ -107,7 +107,7 @@ while aktuellesSpiel.isEnde() == False :
                     """ Ansonsten random Anzahl wieder in den Becher """
                     anzahlZuerueckgelegt = aktuellerSpieler.randomWuerfelInBecherLegen()
 
-                tischErgebnis = Ergebnis([w.getAugenzahl() for w in aktuellerSpieler.spielerWuerfel])
+                tischErgebnis = Ergebnis([w.augenzahl for w in aktuellerSpieler.spielerWuerfel])
                 if Config.LOG_WUERFE: print "Tisch: {0}".format(tischErgebnis)
 
                 if anzahlZuerueckgelegt == 0 or (wurfIndex == 2 and aktuellerSpieler == aktiveSpieler[0]):
@@ -119,7 +119,7 @@ while aktuellesSpiel.isEnde() == False :
                     aktuellerSpieler.wuerfeln()
                     aufgedeckteWuerfel = aktuellerSpieler.aufdecken()
 
-                wurfErgebnis = Ergebnis([w.getAugenzahl() for w in aufgedeckteWuerfel])
+                wurfErgebnis = Ergebnis([w.augenzahl for w in aufgedeckteWuerfel])
 
                 if Config.LOG_WUERFE: print "Wurf: {0}".format(wurfErgebnis)
 
@@ -150,7 +150,7 @@ while aktuellesSpiel.isEnde() == False :
         if len(rundenBeginner.spielerWuerfel) != 3:
             #print "Spieler {0} enthüllt:".format(rundenBeginner)
             aufgedeckteWuerfel = rundenBeginner.aufdecken()
-            wurfErgebnis = Ergebnis([w.getAugenzahl() for w in aufgedeckteWuerfel])
+            wurfErgebnis = Ergebnis([w.augenzahl for w in aufgedeckteWuerfel])
             if Config.LOG_ZUEGE: print "Zugergebnis: {0}".format(wurfErgebnis)
             gesamtErgebnis = Ergebnis(rundenBeginner.spielerWuerfel + wurfErgebnis.augen)
             aktuelleRunde.getErstenZug().getLastWurf().ergebnis = gesamtErgebnis

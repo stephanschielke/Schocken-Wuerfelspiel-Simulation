@@ -20,6 +20,3 @@ class Wuerfel(object):
     def isImBecher(self):
         return self.imBecher
 
-    def getAugenzahl(self):
-        return self.augenzahl
-
