@@ -10,7 +10,7 @@ class Wurf(object):
     def __init__(self, nummer, spieler):
         self.nummer = nummer
         self.spieler = spieler
-        self.ergebnis = Ergebnis([0,0,0])
+        self.ergebnis = None
 
     def __str__(self):
         return "{0}. Wurf"
@@ -21,3 +21,9 @@ class Wurf(object):
     def getErgebnis(self):
         self.ergebnis = Ergebnis([w.getAugenzahl() for w in spieler.getSpielerwuerfel()])
         return self.ergebnis
+
+    def set_Ergebnis(self, ergebnis):
+        self.ergebnis = ergebnis
+
+        #if ergebnis.isEndergebnis:
+            #self.ergebnis.save()

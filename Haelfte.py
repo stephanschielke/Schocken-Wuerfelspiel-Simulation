@@ -1,6 +1,7 @@
 # coding=utf-8
 
 from Config import Config
+from Spieler import Spieler
 
 class Haelfte(object):
 

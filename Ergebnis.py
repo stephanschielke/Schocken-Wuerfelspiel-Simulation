@@ -77,10 +77,6 @@ class Ergebnis(object):
     def __str__(self):
         return "[{0}]".format(",".join(str(x) for x in self.augen))
 
-    def addAugen(self, augen):
-        for x in xrange(0,len(augen)):
-            self.augen.append(augen[x])
-
     def isSchock(self):
         einsen = [i for i in self.augen if i == 1]
         return len(einsen) >= 2

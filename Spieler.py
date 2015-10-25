@@ -1,12 +1,15 @@
 # coding=utf-8
 
 import random
+
 from Config import Config
 from Becher import Becher
 from Wuerfel import Wuerfel
-from Haelfte import Haelfte
 
 class Spieler(object):
+
+    class Meta:
+        database = Config.PSQL_DB
 
     def __init__(self, name):
         self.name = name
@@ -79,6 +82,3 @@ class Spieler(object):
 
     def addMarkierungsstein(self):
         self.markierungsstein += 1
-
-
-

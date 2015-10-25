@@ -3,14 +3,19 @@
 import random
 
 from Config import Config
+from Spieler import Spieler
 from Spiel import Spiel
 from Haelfte import Haelfte
 from Runde import Runde
-from Spieler import Spieler
 from Zug import Zug
 from Wurf import Wurf
 from Ergebnis import Ergebnis
 
+"""
+TODOs:  zwei Sechsen zu einer Eins umdrehen, wenn danach noch ein Wurf frei ist.
+        Mit-Ist-Shit-Regel beachten
+        Handwürfe > zusammengewürfelte Würfe
+"""
 
 """ Spieler initialiseren """
 passiveSpieler = []
@@ -18,6 +23,7 @@ aktiveSpieler = []
 for x in xrange(0,Config.ANZAHL_SPIELER):
     s = Spieler('Spieler {0}'.format(x+1))
     aktiveSpieler.append(s)
+
     if Config.LOG_SPIEL: print aktiveSpieler[x].name + ' nimmt teil.'
 if Config.LOG_SPIEL: print
 
@@ -127,8 +133,7 @@ for x in xrange(1,Config.ANZAHL_SPIELE+1):
                     if Config.LOG_WUERFE: print "Wurf: {0}".format(wurfErgebnis)
 
                     gesamtErgebnis = Ergebnis(tischErgebnis.augen + wurfErgebnis.augen)
-
-                    aktuellerWurf.ergebnis = gesamtErgebnis
+                    aktuellerWurf.set_Ergebnis(gesamtErgebnis)
 
                     aktuellerZug.addWurf(aktuellerWurf)
 
@@ -156,7 +161,7 @@ for x in xrange(1,Config.ANZAHL_SPIELE+1):
                 wurfErgebnis = Ergebnis([w.augenzahl for w in aufgedeckteWuerfel])
                 if Config.LOG_ZUEGE: print "Zugergebnis: {0}".format(wurfErgebnis)
                 gesamtErgebnis = Ergebnis(rundenBeginner.spielerWuerfel + wurfErgebnis.augen)
-                aktuelleRunde.getErstenZug().getLastWurf().ergebnis = gesamtErgebnis
+                aktuelleRunde.getErstenZug().getLastWurf().set_Ergebnis(gesamtErgebnis)
 
             # Runde ist vorbei.
 
@@ -206,7 +211,7 @@ for x in xrange(1,Config.ANZAHL_SPIELE+1):
         for x in xrange(0,len(aktiveSpieler)):
             aktiveSpieler[x].eraseStrafsteine()
 
-    # Hälften löschen
+    # Markierungssteine löschen
     for x in xrange(0,len(aktiveSpieler)):
         aktiveSpieler[x].eraseMarkierungsstein()
 
@@ -216,6 +221,7 @@ for x in xrange(1,Config.ANZAHL_SPIELE+1):
     if Config.LOG_SPIEL: print
     if Config.LOG_SPIEL: print "{0} hat verloren und muss eine Runde ausgeben!".format(aktuellesSpiel.getVerlierer())
     if Config.LOG_SPIEL: print
+
 
 
 
