@@ -1,6 +1,7 @@
 # coding=utf-8
 
 import random
+from Config import Config
 from Becher import Becher
 from Wuerfel import Wuerfel
 from Haelfte import Haelfte
@@ -11,60 +12,55 @@ class Spieler(object):
         self.name = name
         self.teilnehmend = True
         self.becher = Becher(self)
-        self.wuerfelList = [Wuerfel(),Wuerfel(),Wuerfel()]
+        self.spielerWuerfel = [Wuerfel(),Wuerfel(),Wuerfel()]
         self.strafsteine = 0
+        self.haelfte = 0
 
     def __str__(self):
         return self.name
 
     def alleWuerfelInBecherLegen(self):
-        anzahlInBecherGelegt = len(self.wuerfelList)
-        print "{0} legt {1} Würfel in den Becher.".format(self, anzahlInBecherGelegt)
-        self.becher.befuellen(self.wuerfelList)
+        anzahlInBecherGelegt = len(self.spielerWuerfel)
+        if Config.LOG_WUERFE: print "{0} legt {1} Würfel in den Becher.".format(self, anzahlInBecherGelegt)
+        self.becher.befuellen(self.spielerWuerfel)
         return anzahlInBecherGelegt
 
     def randomWuerfelInBecherLegen(self):
-        r = random.randint(0,len(self.wuerfelList))
+        r = random.randint(0,len(self.spielerWuerfel))
         if r != 0 :
-            print "{0} legt {1} Würfel zurück in den Becher.".format(self, r)
+            if Config.LOG_WUERFE: print "{0} legt {1} Würfel zurück in den Becher.".format(self, r)
             for x in xrange(0,r):
-                w = self.wuerfelList.pop(random.randrange(len(self.wuerfelList)))
+                w = self.spielerWuerfel.pop(random.randrange(len(self.spielerWuerfel)))
                 self.becher.befuelle(w)
         else:
-            print "{0} legt keine Würfel zurück in den Becher.".format(self)
+            if Config.LOG_WUERFE: print "{0} legt keine Würfel zurück in den Becher.".format(self)
 
         return r
 
     def wuerfeln(self):
-        print "{0} würfelt".format(self)
+        if Config.LOG_WUERFE: print "{0} würfelt".format(self)
         self.becher.wuerfeln()
 
     def aufdecken(self):
-        print "{0} deckt auf".format(self)
+        if Config.LOG_WUERFE: print "{0} deckt auf".format(self)
         aufgedeckteWuerfel = self.becher.aufdecken();
-        self.wuerfelList = sorted(self.wuerfelList + aufgedeckteWuerfel)
+        self.spielerWuerfel = sorted(self.spielerWuerfel + aufgedeckteWuerfel)
         return aufgedeckteWuerfel
 
     def alleWuerfelAusBecherHolen(self):
-        self.wuerfelList = becher.getAlleWuerfel()
-
-    def getSpielerwuerfel(self):
-        return self.wuerfelList
-
-    def setSpielerwuerfel(self, wuerfelList):
-        self.wuerfelList = wuerfelList
-
-    def getBecher(self):
-        return self.becher
+        self.spielerWuerfel = becher.getAlleWuerfel()
 
     def addStrafsteine(self, anzahl):
         self.strafsteine += anzahl
 
-    def getStrafsteine(self):
-        return self.strafsteine
+    def hasStrafsteine(self):
+        return self.strafsteine > 0
 
     def eraseStrafsteine(self):
         self.strafsteine = 0
+
+    def eraseHaelfte(self):
+        self.haelfte = 0
 
     def verteileStrafsteine(self, verlierer, anzahl):
         if anzahl >= self.strafsteine:
@@ -77,6 +73,12 @@ class Spieler(object):
 
     def hasHaelfteVerloren(self):
         return self.strafsteine >= Haelfte.MAX_STRAFSTEINE
+
+    def hasHaelfte(self):
+        return self.haelfte > 0
+
+    def addHaelfte(self):
+        self.haelfte += 1
 
 
 

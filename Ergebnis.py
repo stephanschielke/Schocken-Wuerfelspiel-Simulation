@@ -2,14 +2,14 @@
 
 class Ergebnis(object):
 
-    RANGFOLGE = [# Meier Würfe
+    RANGFOLGE = [# Schock Würfe
                  [1,1,1], #0
                  [6,1,1], #1
                  [5,1,1], #2
                  [4,1,1], #3
                  [3,1,1], #4
                  [2,1,1], #5
-                 # Pushs
+                 # Generäle
                  [6,6,6], #6
                  [5,5,5],
                  [4,4,4],
@@ -77,18 +77,15 @@ class Ergebnis(object):
     def __str__(self):
         return "[{0}]".format(",".join(str(x) for x in self.augen))
 
-    def getAugen(self):
-        return self.augen
-
     def addAugen(self, augen):
         for x in xrange(0,len(augen)):
             self.augen.append(augen[x])
 
-    def isMeier(self):
+    def isSchock(self):
         einsen = [i for i in self.augen if i == 1]
         return len(einsen) >= 2
 
-    def isMeierAus(self):
+    def isSchockAus(self):
         einsen = [i for i in self.augen if i == 1]
         return len(einsen) >= 3
 
@@ -100,11 +97,11 @@ class Ergebnis(object):
                 rangfolgeIndex = x
                 break
 
-        print "Gewinner-Ergebnis: {0} ".format(self)
-        print "Index: {0} ".format(rangfolgeIndex)
+        #print "Gewinner-Ergebnis: {0} ".format(self)
+        #print "Index: {0} ".format(rangfolgeIndex)
 
         if rangfolgeIndex == 0 :
-            # Meier-Aus
+            # Schock-Aus
             return 13
         elif rangfolgeIndex == 1 :
             return 6

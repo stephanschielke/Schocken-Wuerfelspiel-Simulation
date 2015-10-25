@@ -2,6 +2,7 @@
 
 import random
 
+from Config import Config
 from Spiel import Spiel
 from Haelfte import Haelfte
 from Runde import Runde
@@ -10,51 +11,95 @@ from Zug import Zug
 from Wurf import Wurf
 from Ergebnis import Ergebnis
 
-ANZAHL_SPIELER = 2
-MAX_ANZAHL_WUERFE = 3
-MAX_ANZAHL_HAELFTEN = 3
-""" Ja, es kann 3 "Hälften" geben """
 
 """ Spieler initialiseren """
-spielerList = []
-for x in xrange(0,ANZAHL_SPIELER):
+passiveSpieler = []
+aktiveSpieler = []
+for x in xrange(0,Config.ANZAHL_SPIELER):
     s = Spieler('Spieler {0}'.format(x+1))
-    spielerList.append(s)
-    print spielerList[x].name + ' nimmt teil.'
-print
+    aktiveSpieler.append(s)
+    if Config.LOG_SPIEL: print aktiveSpieler[x].name + ' nimmt teil.'
+if Config.LOG_SPIEL: print
 
 """ Ein neues Spiel beginnt """
+if Config.LOG_SPIEL: print "Spielbeginn"
 aktuellesSpiel = Spiel()
 
 while aktuellesSpiel.isEnde() == False :
 
     """ Die nächste Hälfte beginnt """
-    print "======================="
-    print "{0}. Hälfte hat begonnen.".format(aktuellesSpiel.getAktuelleHaelfteNummer()+1)
-    print "======================="
+    if Config.LOG_HAELFTEN: print "======================="
+    if Config.LOG_HAELFTEN: print "{0}. Hälfte hat begonnen.".format(aktuellesSpiel.getAktuelleHaelfteNummer()+1)
+    if Config.LOG_HAELFTEN: print "======================="
     aktuelleHaelfte = Haelfte()
 
+    # Alle nehmen bei einer neuen Hälfte Teil
+    for x in xrange(len(passiveSpieler)-1, -1, -1):
+        spieler = passiveSpieler[x]
+        passiveSpieler.remove(spieler)
+        aktiveSpieler.append(spieler)
+
+    # Spieler aus dem Finale nehmen wenn sie keine Hälfte haben
+    if aktuellesSpiel.getAktuelleHaelfteNummer() == 2:
+        for x in xrange(len(aktiveSpieler)-1, -1, -1):
+            spieler = aktiveSpieler[x]
+            print "{0} aktive Spieler".format(len(aktiveSpieler))
+
+            print "{0} Strafsteine".format(spieler.strafsteine)
+            if spieler.hasHaelfte():
+                if Config.LOG_HAELFTEN: print "{0} nimmt an dieser Hälfte teil.".format(spieler)
+                passiveSpieler.remove(spieler)
+                aktiveSpieler.append(spieler)
+            else:
+                if Config.LOG_HAELFTEN: print "{0} ist raus aus dem Finale.".format(spieler)
+                aktiveSpieler.remove(spieler)
+                passiveSpieler.append(spieler)
+
+            print "{0} aktive Spieler".format(len(aktiveSpieler))
+
+    for x in xrange(len(aktiveSpieler)-1, -1, -1):
+        if Config.LOG_HAELFTEN: print "{0} nimmt an dieser Hälfte teil.".format(aktiveSpieler[x])
+
+    if Config.LOG_HAELFTEN: print
+
     """ Die Hälfte dauert so lange wie es keinen Verlierer gibt """
-    while aktuelleHaelfte.getVerlierer() == None :
+    while aktuelleHaelfte.verlierer == None :
 
         """ Die nächste Runde beginnt """
-        print "{0}. Runde hat begonnen.".format(aktuelleHaelfte.getAktuelleRundenNummer()+1)
+        if Config.LOG_RUNDEN: print
+        if Config.LOG_RUNDEN: print "{0}. Runde hat begonnen.".format(aktuelleHaelfte.getAktuelleRundenNummer()+1)
         aktuelleRunde = Runde()
 
-        for x in xrange(0,len(spielerList)):
+        # Spieler aus dem Finale nehmen wenn sie keine Hälfte haben
+        print "{0} aktive Spieler".format(len(aktiveSpieler))
+
+        for x in xrange(len(aktiveSpieler)-1,-1,-1):
+            spieler = aktiveSpieler[x]
+            if not aktuelleHaelfte.hasStrafsteine() and not spieler.hasStrafsteine():
+                if Config.LOG_RUNDEN: print "{0} ist raus aus der Runde.".format(spieler)
+                aktiveSpieler.remove(spieler)
+                passiveSpieler.append(spieler)
+            else:
+                if Config.LOG_RUNDEN: print "{0} nimmt an dieser Runde teil.".format(spieler)
+
+        print "{0} aktive Spieler".format(len(aktiveSpieler))
+
+        if Config.LOG_RUNDEN: print
+
+        for x in xrange(0,len(aktiveSpieler)):
             """ Nächster Spieler ist an der Reihe """
-            aktuellerSpieler = spielerList[x]
+            aktuellerSpieler = aktiveSpieler[x]
 
             """ Einen Zug spielen """
             aktuellerZug = Zug(aktuellerSpieler)
 
-            print "{0} ist am Zug".format(aktuellerSpieler)
-            for wurfIndex in xrange(0, random.randint(1, MAX_ANZAHL_WUERFE)):
+            if Config.LOG_ZUEGE: print "{0} ist am Zug".format(aktuellerSpieler)
+            for wurfIndex in xrange(0, random.randint(1, Config.MAX_ANZAHL_WUERFE)):
 
-                print "{0} startet seinen {1}. Wurf".format(aktuellerSpieler, str(aktuellerZug.aktuellerWurf()))
+                if Config.LOG_WUERFE: print "{0} startet seinen {1}. Wurf".format(aktuellerSpieler, str(aktuellerZug.aktuellerWurf()))
                 aktuellerWurf = Wurf(wurfIndex + 1, aktuellerSpieler)
 
-                aufgedeckteWuerfel = aktuellerSpieler.getSpielerwuerfel()
+                aufgedeckteWuerfel = aktuellerSpieler.spielerWuerfel
 
                 if wurfIndex+1 == 1 :
                     """ Beim ersten Wurf werden alle Würfel in den becher getan """
@@ -63,12 +108,12 @@ while aktuellesSpiel.isEnde() == False :
                     """ Ansonsten random Anzahl wieder in den Becher """
                     anzahlZuerueckgelegt = aktuellerSpieler.randomWuerfelInBecherLegen()
 
-                tischErgebnis = Ergebnis([w.getAugenzahl() for w in aktuellerSpieler.getSpielerwuerfel()])
-                print "Tisch: {0}".format(tischErgebnis)
+                tischErgebnis = Ergebnis([w.getAugenzahl() for w in aktuellerSpieler.spielerWuerfel])
+                if Config.LOG_WUERFE: print "Tisch: {0}".format(tischErgebnis)
 
-                if anzahlZuerueckgelegt == 0 or (wurfIndex == 2 and aktuellerSpieler == spielerList[0]):
+                if anzahlZuerueckgelegt == 0 or (wurfIndex == 2 and aktuellerSpieler == aktiveSpieler[0]):
                     """ Spieler will nicht mehr würfeln und lässt stehen """
-                    print "{0} lässt stehen.".format(aktuellerSpieler)
+                    if Config.LOG_WUERFE: print "{0} lässt stehen.".format(aktuellerSpieler)
                     break
                 else:
                     """ Spieler will weiterwürfeln """
@@ -77,38 +122,39 @@ while aktuellesSpiel.isEnde() == False :
 
                 wurfErgebnis = Ergebnis([w.getAugenzahl() for w in aufgedeckteWuerfel])
 
-                print "Wurf: {0}".format(wurfErgebnis)
+                if Config.LOG_WUERFE: print "Wurf: {0}".format(wurfErgebnis)
 
-                gesamtErgebnis = Ergebnis(tischErgebnis.getAugen() + wurfErgebnis.getAugen())
+                gesamtErgebnis = Ergebnis(tischErgebnis.augen + wurfErgebnis.augen)
 
-                aktuellerWurf.setErgebnis(gesamtErgebnis)
+                aktuellerWurf.ergebnis = gesamtErgebnis
 
                 aktuellerZug.addWurf(aktuellerWurf)
 
             # Würfe von Spieler X sind vorbei
 
-            print "{0} beendet seinen Zug".format(aktuellerSpieler)
+            if Config.LOG_ZUEGE: print "{0} beendet seinen Zug".format(aktuellerSpieler)
 
-            aktuellerZug.setEndergebnis(gesamtErgebnis)
-            print "Zugergebnis: {0}".format(gesamtErgebnis)
-
-            #if gesamtErgebnis.isMeierAus() :
-            #    break
+            aktuellerZug.endergebnis = gesamtErgebnis
+            if Config.LOG_ZUEGE: print "Zugergebnis: {0}".format(gesamtErgebnis)
 
             aktuelleRunde.addZug(aktuellerZug)
+
+            if gesamtErgebnis.isSchockAus() :
+                break
 
             # Zug vom Spieler X ist vorbei
 
         # Alle Spieler haben Ihre Züge gemacht.
 
         # Spieler der angefangen hat muss noch aufdecken
-        rundenBeginner = spielerList[0]
-        #print "Spieler {0} enthüllt:".format(rundenBeginner)
-        aufgedeckteWuerfel = rundenBeginner.aufdecken()
-        wurfErgebnis = Ergebnis([w.getAugenzahl() for w in aufgedeckteWuerfel])
-        print "Zugergebnis: {0}".format(wurfErgebnis)
-        gesamtErgebnis = Ergebnis(rundenBeginner.getSpielerwuerfel() + wurfErgebnis.getAugen())
-        aktuelleRunde.getErstenZug().getLastWurf().setErgebnis(gesamtErgebnis)
+        rundenBeginner = aktiveSpieler[0]
+        if len(rundenBeginner.spielerWuerfel) != 3:
+            #print "Spieler {0} enthüllt:".format(rundenBeginner)
+            aufgedeckteWuerfel = rundenBeginner.aufdecken()
+            wurfErgebnis = Ergebnis([w.getAugenzahl() for w in aufgedeckteWuerfel])
+            if Config.LOG_ZUEGE: print "Zugergebnis: {0}".format(wurfErgebnis)
+            gesamtErgebnis = Ergebnis(rundenBeginner.spielerWuerfel + wurfErgebnis.augen)
+            aktuelleRunde.getErstenZug().getLastWurf().ergebnis = gesamtErgebnis
 
         # Runde ist vorbei.
 
@@ -116,48 +162,55 @@ while aktuellesSpiel.isEnde() == False :
         rundenBester = aktuelleRunde.ermittleBestenSpieler()
         strafe = aktuelleRunde.ermittleStrafe()
         aktuelleHaelfte.addRunde(aktuelleRunde)
-        print "Die {0}. Runde hat {1} verloren.".format(aktuelleHaelfte.getAktuelleRundenNummer(), rundenVerlierer)
-        print
+        if Config.LOG_RUNDEN: print "Die {0}. Runde hat {1} verloren.".format(aktuelleHaelfte.getAktuelleRundenNummer(), rundenVerlierer)
+        if Config.LOG_RUNDEN: print
 
-        for x in xrange(0,len(spielerList)):
-            print "{0} hat {1} Strafsteine".format(spielerList[x], spielerList[x].getStrafsteine())
+        for x in xrange(0,len(aktiveSpieler)):
+            if Config.LOG_STRAFSTEINE: print "{0} hat {1} Strafsteine".format(aktiveSpieler[x], aktiveSpieler[x].strafsteine)
 
         # Strafsteine verteilen
         if aktuelleHaelfte.hasStrafsteine() :
-            print "Auf dem Stapel befinden sich {0} Strafsteine".format(aktuelleHaelfte.getStrafsteine())
-            print "{0} bekommt {1} Straftsteine vom Stapel".format(rundenVerlierer, strafe)
+            if Config.LOG_STRAFSTEINE: print "Auf dem Stapel befinden sich {0} Strafsteine".format(aktuelleHaelfte.strafsteine)
+            if Config.LOG_STRAFSTEINE: print "{0} bekommt {1} Straftsteine vom Stapel".format(rundenVerlierer, strafe)
             aktuelleHaelfte.verteileStrafsteine(rundenVerlierer, strafe)
-            print "Auf dem Stapel befinden sich jetzt {0} Strafsteine".format(aktuelleHaelfte.getStrafsteine())
         else :
-            print "Auf dem Stapel befinden sich keine Strafsteine mehr."
-            print "{0} bekommt {1} Straftsteine von {2}".format(rundenVerlierer, strafe, rundenBester)
+            if Config.LOG_STRAFSTEINE: print "Auf dem Stapel befinden sich keine Strafsteine mehr."
+            if Config.LOG_STRAFSTEINE: print "{0} bekommt {1} Straftsteine von {2}".format(rundenVerlierer, strafe, rundenBester)
             verteilteSteine = rundenBester.verteileStrafsteine(rundenVerlierer, strafe)
-            print "{0} hat {1} Straftsteine von {2} bekommen".format(rundenVerlierer, verteilteSteine, rundenBester)
 
-        # Gibt es einen Verlierer?
-        for x in xrange(0,len(spielerList)):
-            spieler = spielerList[x]
-            print "{0} hat jetzt {1} Strafsteine".format(spieler, spieler.getStrafsteine())
-            if spieler.hasHaelfteVerloren():
-                aktuelleHaelfte.setVerlierer(spieler)
+        if gesamtErgebnis.isSchockAus() :
+            aktuelleHaelfte.verlierer = rundenVerlierer
+        else:
+            # Gibt es einen Verlierer?
+            for x in xrange(0,len(aktiveSpieler)):
+                spieler = aktiveSpieler[x]
+                if spieler.hasHaelfteVerloren():
+                    if Config.LOG_STRAFSTEINE: print "{0} hat jetzt {1} Strafsteine".format(spieler, spieler.strafsteine)
+                    aktuelleHaelfte.verlierer = spieler
+                    spieler.addHaelfte()
 
     # Eine Hälfte ist vorbei
     aktuellesSpiel.addHaelfte(aktuelleHaelfte)
+    if Config.LOG_HAELFTEN: print
+    if Config.LOG_HAELFTEN: print "Die {0}. Hälfte hat {1} verloren.".format(aktuellesSpiel.getAktuelleHaelfteNummer(), aktuelleHaelfte.verlierer)
+    if Config.LOG_HAELFTEN: print
 
-    for x in xrange(0,len(spielerList)):
-        spielerList[x].eraseStrafsteine()
+    # Verlierer muss in der nächsten Runde anfangen
+    verlierer = aktiveSpieler.pop(aktiveSpieler.index(aktuelleHaelfte.verlierer))
+    aktiveSpieler.insert(0, verlierer)
+
+    # Spielsteine zurücksetzen
+    for x in xrange(0,len(aktiveSpieler)):
+        aktiveSpieler[x].eraseStrafsteine()
+        aktiveSpieler[x].eraseHaelfte()
 
 
-
-    print
-    print "Die {0}. Hälfte hat {1} verloren.".format(aktuellesSpiel.getAktuelleHaelfteNummer(), aktuelleHaelfte.getVerlierer())
-    print
-print "=================="
-print "Das Spiel ist aus."
-print "=================="
-print
-print "{0} hat verloren und muss eine Runde ausgeben.".format(aktuellesSpiel.getVerlierer())
-print
+if Config.LOG_SPIEL: print "=================="
+if Config.LOG_SPIEL: print "Das Spiel ist aus."
+if Config.LOG_SPIEL: print "=================="
+if Config.LOG_SPIEL: print
+if Config.LOG_SPIEL: print "{0} hat verloren und muss eine Runde ausgeben!".format(aktuellesSpiel.getVerlierer())
+if Config.LOG_SPIEL: print
 
 
 

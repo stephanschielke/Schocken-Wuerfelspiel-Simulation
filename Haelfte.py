@@ -12,12 +12,6 @@ class Haelfte(object):
     def addRunde(self, runde):
         self.runden.append(runde)
 
-    def setVerlierer(self, spieler):
-        self.verlierer = spieler
-
-    def getVerlierer(self):
-        return self.verlierer
-
     def getAktuelleRundenNummer(self):
         return len(self.runden)
 
@@ -28,9 +22,5 @@ class Haelfte(object):
         verlierer.addStrafsteine(anzahl)
         self.strafsteine -= anzahl
 
-
     def hasStrafsteine(self):
         return self.strafsteine > 0
-
-    def getStrafsteine(self):
-        return self.strafsteine

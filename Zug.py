@@ -21,35 +21,26 @@ class Zug(object):
     def aktuellerWurf(self):
         return len(self.wuerfe)+1
 
-    def setEndergebnis(self, endergebnis):
-        self.endergebnis = endergebnis
-
-    def getEndergebnis(self):
-        return self.endergebnis
-
-    def getSpieler(self):
-        return self.spieler
-
     def __lt__(self, other):
-        return self.getEndergebnis() < other.getEndergebnis()
+        return self.endergebnis < other.endergebnis
 
     def __le__(self, other):
-        return self.getEndergebnis() <= other.getEndergebnis()
+        return self.endergebnis <= other.endergebnis
 
     def __eq__(self, other):
         if other == None :
             return False
 
-        return self.getEndergebnis() == other.getEndergebnis()
+        return self.endergebnis == other.endergebnis
 
     def __ne__(self, other):
         if other == None :
             return True
 
-        return self.getEndergebnis() != other.getEndergebnis()
+        return self.endergebnis != other.endergebnis
 
     def __gt__(self, other):
-        return self.getEndergebnis() > other.getEndergebnis()
+        return self.endergebnis > other.endergebnis
 
     def __ge__(self, other):
-        return self.getEndergebnis() >= other.getEndergebnis()
+        return self.endergebnis >= other.endergebnis

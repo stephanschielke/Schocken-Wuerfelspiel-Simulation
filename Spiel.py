@@ -9,11 +9,11 @@ class Spiel(object):
         self.haelften.append(haelfte)
 
     def isEnde(self):
-        if len(self.haelften) ==3 :
+        if len(self.haelften) == 3 :
             return True
         elif len(self.haelften) == 2 :
             """ Beide Hälften müssen vom gleichen Spieler verloren worden sein """
-            return self.haelften[0].getVerlierer() == self.haelften[1].getVerlierer()
+            return self.haelften[0].verlierer == self.haelften[1].verlierer
         else :
             return False
 
@@ -22,6 +22,6 @@ class Spiel(object):
 
     def getVerlierer(self):
         if self.isEnde() :
-            return self.haelften[len(self.haelften)-1].getVerlierer()
+            return self.haelften[len(self.haelften)-1].verlierer
         else :
             return False

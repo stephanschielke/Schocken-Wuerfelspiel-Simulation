@@ -1,6 +1,7 @@
 # coding=utf-8
 
 from Wurf import Wurf
+from Config import Config
 
 class Runde(object):
 
@@ -10,19 +11,13 @@ class Runde(object):
         self.verlierer = None
         self.besterSpieler = None
 
-    def setSpielerMitHoechstemWurf(self, spieler):
-        self.spielerMitHoechstemWurf = spieler
-
-    def setVerlierer(self, spieler):
-        self.verlierer = spieler
-
     def addZug(self, zug):
         self.zuege.append(zug)
 
     def getZug(self, spieler):
         zug = None
         for x in xrange(0,len(self.zuege)):
-            if self.zuege[x].getSpieler() == spieler:
+            if self.zuege[x].spieler == spieler:
                 zug = self.zuege[x]
         return zug
 
@@ -30,7 +25,7 @@ class Runde(object):
         return self.zuege[0]
 
     def getRundenBeginner(self):
-        return self.zuege[0].getSpieler()
+        return self.zuege[0].spieler
 
     def getWinningWurf(self):
         """ TODO """
@@ -46,10 +41,10 @@ class Runde(object):
             if hoechsterZug == None or self.zuege[x] > hoechsterZug :
                 hoechsterZug = self.zuege[x]
 
-        print "Höchster Zug: {0}".format(hoechsterZug)
+        if Config.LOG_RUNDEN: print "Höchster Zug: {0}".format(hoechsterZug)
 
         if hoechsterZug != None :
-            self.strafe = hoechsterZug.getEndergebnis().getStrafsteinWertigkeit()
+            self.strafe = hoechsterZug.endergebnis.getStrafsteinWertigkeit()
 
         return self.strafe
 
@@ -61,10 +56,10 @@ class Runde(object):
             if hoechsterZug == None or self.zuege[x] > hoechsterZug :
                 hoechsterZug = self.zuege[x]
 
-        print "Bester Spieler der Runde: {0}".format(hoechsterZug.getSpieler())
+        if Config.LOG_RUNDEN: print "Bester Spieler der Runde: {0}".format(hoechsterZug.spieler)
 
         if hoechsterZug != None :
-            self.besterSpieler = hoechsterZug.getSpieler()
+            self.besterSpieler = hoechsterZug.spieler
 
         return self.besterSpieler
 
@@ -78,6 +73,6 @@ class Runde(object):
                 niedrigsterZug = self.zuege[x]
 
         if niedrigsterZug != None :
-            self.verlierer = niedrigsterZug.getSpieler()
+            self.verlierer = niedrigsterZug.spieler
 
         return self.verlierer
