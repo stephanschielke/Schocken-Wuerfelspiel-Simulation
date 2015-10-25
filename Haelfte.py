@@ -1,11 +1,11 @@
 # coding=utf-8
 
+from Config import Config
+
 class Haelfte(object):
 
-    MAX_STRAFSTEINE = 13
-
     def __init__(self):
-        self.strafsteine = Haelfte.MAX_STRAFSTEINE
+        self.strafsteine = Config.MAX_STRAFSTEINE
         self.runden = []
         self.verlierer = None
 

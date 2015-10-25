@@ -50,7 +50,7 @@ for x in xrange(1,Config.ANZAHL_SPIELE+1):
 
                 #print "{0} Strafsteine".format(spieler.strafsteine)
                 #print "{0} Haelften".format(spieler.haelfte)
-                if spieler.hasHaelfte():
+                if spieler.hasMarkierungsstein():
                     if Config.LOG_HAELFTEN: print "{0} nimmt an dieser Hälfte teil.".format(spieler)
                 else:
                     if Config.LOG_HAELFTEN: print "{0} ist raus aus dem Finale.".format(spieler)
@@ -182,7 +182,7 @@ for x in xrange(1,Config.ANZAHL_SPIELE+1):
 
             if gesamtErgebnis.isSchockAus() :
                 aktuelleHaelfte.verlierer = rundenVerlierer
-                rundenVerlierer.addHaelfte()
+                rundenVerlierer.addMarkierungsstein()
             else:
                 # Gibt es einen Verlierer?
                 for x in xrange(0,len(aktiveSpieler)):
@@ -190,7 +190,7 @@ for x in xrange(1,Config.ANZAHL_SPIELE+1):
                     if spieler.hasHaelfteVerloren():
                         if Config.LOG_STRAFSTEINE: print "{0} hat jetzt {1} Strafsteine".format(spieler, spieler.strafsteine)
                         aktuelleHaelfte.verlierer = spieler
-                        spieler.addHaelfte()
+                        spieler.addMarkierungsstein()
 
         # Eine Hälfte ist vorbei
         aktuellesSpiel.addHaelfte(aktuelleHaelfte)
@@ -208,7 +208,7 @@ for x in xrange(1,Config.ANZAHL_SPIELE+1):
 
     # Hälften löschen
     for x in xrange(0,len(aktiveSpieler)):
-        aktiveSpieler[x].eraseHaelfte()
+        aktiveSpieler[x].eraseMarkierungsstein()
 
     if Config.LOG_SPIEL: print "====================="
     if Config.LOG_SPIEL: print "Das {0}. Spiel ist aus".format(aktuellesSpiel.nummer)

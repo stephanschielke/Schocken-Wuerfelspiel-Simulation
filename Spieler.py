@@ -14,7 +14,7 @@ class Spieler(object):
         self.becher = Becher(self)
         self.spielerWuerfel = [Wuerfel(),Wuerfel(),Wuerfel()]
         self.strafsteine = 0
-        self.haelfte = 0
+        self.markierungsstein = 0
 
     def __str__(self):
         return self.name
@@ -59,8 +59,8 @@ class Spieler(object):
     def eraseStrafsteine(self):
         self.strafsteine = 0
 
-    def eraseHaelfte(self):
-        self.haelfte = 0
+    def eraseMarkierungsstein(self):
+        self.markierungsstein = 0
 
     def verteileStrafsteine(self, verlierer, anzahl):
         if anzahl >= self.strafsteine:
@@ -72,13 +72,13 @@ class Spieler(object):
         return anzahl
 
     def hasHaelfteVerloren(self):
-        return self.strafsteine >= Haelfte.MAX_STRAFSTEINE
+        return self.strafsteine >= Config.MAX_STRAFSTEINE
 
-    def hasHaelfte(self):
-        return self.haelfte > 0
+    def hasMarkierungsstein(self):
+        return self.markierungsstein > 0
 
-    def addHaelfte(self):
-        self.haelfte += 1
+    def addMarkierungsstein(self):
+        self.markierungsstein += 1
 
 
 
