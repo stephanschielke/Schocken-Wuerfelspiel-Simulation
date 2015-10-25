@@ -2,7 +2,7 @@
 
 class Ergebnis(object):
 
-    RANGFOLGE = [# Schock Würfe
+    RANGFOLGE = [ # Schock Würfe
                  [1,1,1], #0
                  [6,1,1], #1
                  [5,1,1], #2
@@ -134,7 +134,6 @@ class Ergebnis(object):
 
         for x in xrange(0,len(self.augen)):
             same = self.augen[x] == other[x]
-
         return same
 
     def __ne__(self, other):

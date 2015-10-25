@@ -2,8 +2,12 @@
 
 class Spiel(object):
 
-    def __init__(self):
+    def __init__(self, nummer):
+        self.nummer = nummer
         self.haelften = []
+
+    def __str__(self):
+        return "Spiel Nr. {0}".format(self.nummer)
 
     def addHaelfte(self, haelfte):
         self.haelften.append(haelfte)

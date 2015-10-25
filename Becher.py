@@ -21,7 +21,6 @@ class Becher(object):
         for x in xrange(0,len(wuerfelList)):
             w = wuerfelList.pop();
             self.wuerfelList.append(w)
-            """print len(self.wuerfelList)"""
             w.setImBecher(True)
 
     def befuelle(self, wuerfel):
@@ -29,13 +28,11 @@ class Becher(object):
         wuerfel.setImBecher(True)
 
     def wuerfeln(self):
-        """ Würfeln findet im Becher statt """
         for x in xrange(0,len(self.wuerfelList)):
             self.wuerfelList[x].wuerfeln()
 
     def aufdecken(self):
         for x in xrange(0,len(self.wuerfelList)):
             self.wuerfelList[x].setImBecher(False)
-
         return self.entnehmeAlleWuerfel()
 

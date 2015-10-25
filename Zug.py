@@ -30,7 +30,6 @@ class Zug(object):
     def __eq__(self, other):
         if other == None :
             return False
-
         return self.endergebnis == other.endergebnis
 
     def __ne__(self, other):
