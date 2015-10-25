@@ -46,10 +46,9 @@ while aktuellesSpiel.isEnde() == False :
             print "{0} aktive Spieler".format(len(aktiveSpieler))
 
             print "{0} Strafsteine".format(spieler.strafsteine)
+            print "{0} Haelften".format(spieler.haelfte)
             if spieler.hasHaelfte():
                 if Config.LOG_HAELFTEN: print "{0} nimmt an dieser Hälfte teil.".format(spieler)
-                passiveSpieler.remove(spieler)
-                aktiveSpieler.append(spieler)
             else:
                 if Config.LOG_HAELFTEN: print "{0} ist raus aus dem Finale.".format(spieler)
                 aktiveSpieler.remove(spieler)
@@ -180,6 +179,7 @@ while aktuellesSpiel.isEnde() == False :
 
         if gesamtErgebnis.isSchockAus() :
             aktuelleHaelfte.verlierer = rundenVerlierer
+            rundenVerlierer.addHaelfte()
         else:
             # Gibt es einen Verlierer?
             for x in xrange(0,len(aktiveSpieler)):
@@ -202,8 +202,10 @@ while aktuellesSpiel.isEnde() == False :
     # Spielsteine zurücksetzen
     for x in xrange(0,len(aktiveSpieler)):
         aktiveSpieler[x].eraseStrafsteine()
-        aktiveSpieler[x].eraseHaelfte()
 
+# Hälften löschen
+for x in xrange(0,len(aktiveSpieler)):
+    aktiveSpieler[x].eraseHaelfte()
 
 if Config.LOG_SPIEL: print "=================="
 if Config.LOG_SPIEL: print "Das Spiel ist aus."
