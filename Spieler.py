@@ -3,6 +3,7 @@
 import random
 from Becher import Becher
 from Wuerfel import Wuerfel
+from Haelfte import Haelfte
 
 class Spieler(object):
 
@@ -11,6 +12,7 @@ class Spieler(object):
         self.teilnehmend = True
         self.becher = Becher(self)
         self.wuerfelList = [Wuerfel(),Wuerfel(),Wuerfel()]
+        self.strafsteine = 0
 
     def __str__(self):
         return self.name
@@ -54,6 +56,27 @@ class Spieler(object):
 
     def getBecher(self):
         return self.becher
+
+    def addStrafsteine(self, anzahl):
+        self.strafsteine += anzahl
+
+    def getStrafsteine(self):
+        return self.strafsteine
+
+    def eraseStrafsteine(self):
+        self.strafsteine = 0
+
+    def verteileStrafsteine(self, verlierer, anzahl):
+        if anzahl >= self.strafsteine:
+            anzahl = self.strafsteine
+
+        verlierer.addStrafsteine(anzahl)
+        self.strafsteine -= anzahl
+
+        return anzahl
+
+    def hasHaelfteVerloren(self):
+        return self.strafsteine >= Haelfte.MAX_STRAFSTEINE
 
 
 
