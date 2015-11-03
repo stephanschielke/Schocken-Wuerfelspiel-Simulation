@@ -22,9 +22,7 @@ Ein Zug besteht aus 1-3 Würfen.
 Ein Wurf hat ein Ergebnis.
 
 ### TODOs
-* Zwei Sechsen zu einer Eins umdrehen, wenn danach noch ein Wurf frei ist
-* "Mit-Ist-Shit"-Regel beachten
-* Handwürfe > zusammengewürfelte Würfe
+Siehe [Issues](https://github.com/DeusExMachina/Schocken-Wuerfelspiel-Simulation/issues).
 
 # Installation
 ## Python
