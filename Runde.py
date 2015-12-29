@@ -1,6 +1,5 @@
 # coding=utf-8
 
-from Wurf import Wurf
 from Config import Config
 
 

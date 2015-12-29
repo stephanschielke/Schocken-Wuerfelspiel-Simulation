@@ -1,5 +1,6 @@
 # coding=utf-8
 
+
 class Config(object):
     # ca. 10  s für 1000 Spiele
     # ca.  1  s für 100  Spiele

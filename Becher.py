@@ -1,7 +1,5 @@
 # coding=utf-8
 
-from Wuerfel import Wuerfel
-
 
 class Becher(object):
     def __init__(self, spieler):

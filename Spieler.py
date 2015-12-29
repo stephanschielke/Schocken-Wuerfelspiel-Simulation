@@ -43,12 +43,12 @@ class Spieler(object):
 
     def aufdecken(self):
         if Config.LOG_WUERFE: print("{0} deckt auf".format(self))
-        aufgedeckte_wuerfel = self.becher.aufdecken();
+        aufgedeckte_wuerfel = self.becher.aufdecken()
         self.spielerWuerfel = sorted(self.spielerWuerfel + aufgedeckte_wuerfel)
         return aufgedeckte_wuerfel
 
     def alle_wuerfel_aus_becher_holen(self):
-        self.spielerWuerfel = becher.getAlleWuerfel()
+        self.spielerWuerfel = self.becher.entnehme_alle_wuerfel()
 
     def add_strafsteine(self, anzahl):
         self.strafsteine += anzahl

@@ -1,5 +1,6 @@
 # coding=utf-8
 
+
 class Ergebnis(object):
     RANGFOLGE = [  # Schock Würfe
         [1, 1, 1],  # 0

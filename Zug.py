@@ -1,7 +1,5 @@
 # coding=utf-8
 
-from Wurf import Wurf
-
 
 class Zug(object):
     def __init__(self, spieler):

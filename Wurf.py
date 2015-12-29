@@ -1,8 +1,5 @@
 # coding=utf-8
 
-from Spieler import Spieler
-from Becher import Becher
-from Wuerfel import Wuerfel
 from Ergebnis import Ergebnis
 
 
