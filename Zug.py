@@ -2,8 +2,8 @@
 
 from Wurf import Wurf
 
-class Zug(object):
 
+class Zug(object):
     def __init__(self, spieler):
         self.spieler = spieler
         self.wuerfe = []
@@ -12,18 +12,20 @@ class Zug(object):
     def __str__(self):
         return "{0} mit Endergebnis {1}".format(self.spieler, self.endergebnis)
 
-    def getLastWurf(self):
-        return self.wuerfe[len(self.wuerfe)-1]
+    def get_last_wurf(self):
+        return self.wuerfe[len(self.wuerfe) - 1]
 
-    def addWurf(self, wurf):
+    def add_wurf(self, wurf):
         self.wuerfe.append(wurf)
 
-    def aktuellerWurf(self):
-        return len(self.wuerfe)+1
+    def aktueller_wurf(self):
+        return len(self.wuerfe) + 1
 
     def __lt__(self, other):
         return self.endergebnis < other.endergebnis
 
+
+'''
     def __le__(self, other):
         return self.endergebnis <= other.endergebnis
 
@@ -43,3 +45,4 @@ class Zug(object):
 
     def __ge__(self, other):
         return self.endergebnis >= other.endergebnis
+        '''

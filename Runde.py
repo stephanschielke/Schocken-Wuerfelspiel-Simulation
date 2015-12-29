@@ -3,76 +3,74 @@
 from Wurf import Wurf
 from Config import Config
 
-class Runde(object):
 
+class Runde(object):
     def __init__(self):
         self.zuege = []
         self.strafe = 0
         self.verlierer = None
         self.besterSpieler = None
 
-    def addZug(self, zug):
+    def add_zug(self, zug):
         self.zuege.append(zug)
 
-    def getZug(self, spieler):
+    def get_zug(self, spieler):
         zug = None
-        for x in xrange(0,len(self.zuege)):
+        for x in range(0, len(self.zuege)):
             if self.zuege[x].spieler == spieler:
                 zug = self.zuege[x]
         return zug
 
-    def getErstenZug(self):
+    def get_ersten_zug(self):
         return self.zuege[0]
 
-    def getRundenBeginner(self):
+    def get_runden_beginner(self):
         return self.zuege[0].spieler
 
-    def getWinningWurf(self):
+    def get_winning_wurf(self):
         """ TODO """
-        return self.zuege[len(self.zuege)].getLastWurf()
+        return self.zuege[len(self.zuege)].get_last_wurf()
 
-    def getAktuelleZugNummer(self):
+    def get_aktuelle_zugnummer(self):
         return len(self.zuege)
 
-    def ermittleStrafe(self):
-        hoechsterZug = self.zuege[0]
-        for x in xrange(1,len(self.zuege)):
+    def ermittle_strafe(self):
+        hoechster_zug = self.zuege[0]
+        for x in range(1, len(self.zuege)):
             """ TODO: Mit-Ist-Shit """
-            if hoechsterZug == None or self.zuege[x] > hoechsterZug :
-                hoechsterZug = self.zuege[x]
+            if hoechster_zug is None or self.zuege[x] > hoechster_zug:
+                hoechster_zug = self.zuege[x]
 
-        if Config.LOG_RUNDEN: print "Höchster Zug: {0}".format(hoechsterZug)
+        if Config.LOG_RUNDEN: print("Höchster Zug: {0}".format(hoechster_zug))
 
-        if hoechsterZug != None :
-            self.strafe = hoechsterZug.endergebnis.getStrafsteinWertigkeit()
+        if hoechster_zug is not None:
+            self.strafe = hoechster_zug.endergebnis.get_strafstein_wertigkeit()
 
         return self.strafe
 
-
-    def ermittleBestenSpieler(self):
-        hoechsterZug = self.zuege[0]
-        for x in xrange(1,len(self.zuege)):
+    def ermittle_besten_spieler(self):
+        hoechster_zug = self.zuege[0]
+        for x in range(1, len(self.zuege)):
             """ TODO: Mit-Ist-Shit """
-            if hoechsterZug == None or self.zuege[x] > hoechsterZug :
-                hoechsterZug = self.zuege[x]
+            if hoechster_zug is None or self.zuege[x] > hoechster_zug:
+                hoechster_zug = self.zuege[x]
 
-        if Config.LOG_RUNDEN: print "Bester Spieler der Runde: {0}".format(hoechsterZug.spieler)
+        if Config.LOG_RUNDEN: print("Bester Spieler der Runde: {0}".format(hoechster_zug.spieler))
 
-        if hoechsterZug != None :
-            self.besterSpieler = hoechsterZug.spieler
+        if hoechster_zug is not None:
+            self.besterSpieler = hoechster_zug.spieler
 
         return self.besterSpieler
 
+    def ermittle_verlierer(self):
+        niedrigster_zug = self.zuege[0]
 
-    def ermittleVerlierer(self):
-        niedrigsterZug = self.zuege[0]
-
-        for x in xrange(1,len(self.zuege)):
+        for x in range(1, len(self.zuege)):
             """ TODO: Mit-Ist-Shit """
-            if niedrigsterZug == None or self.zuege[x] < niedrigsterZug :
-                niedrigsterZug = self.zuege[x]
+            if niedrigster_zug is None or self.zuege[x] < niedrigster_zug:
+                niedrigster_zug = self.zuege[x]
 
-        if niedrigsterZug != None :
-            self.verlierer = niedrigsterZug.spieler
+        if niedrigster_zug is not None:
+            self.verlierer = niedrigster_zug.spieler
 
         return self.verlierer

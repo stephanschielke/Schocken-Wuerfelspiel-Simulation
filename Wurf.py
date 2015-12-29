@@ -5,8 +5,8 @@ from Becher import Becher
 from Wuerfel import Wuerfel
 from Ergebnis import Ergebnis
 
-class Wurf(object):
 
+class Wurf(object):
     def __init__(self, nummer, spieler):
         self.nummer = nummer
         self.spieler = spieler
@@ -15,15 +15,15 @@ class Wurf(object):
     def __str__(self):
         return "{0}. Wurf"
 
-    def getSpielerWuerfel(self):
-        return spieler.getSpielerwuerfel()
+    def get_spielerwuerfel(self):
+        return self.spieler.getSpielerwuerfel()
 
-    def getErgebnis(self):
-        self.ergebnis = Ergebnis([w.getAugenzahl() for w in spieler.getSpielerwuerfel()])
+    def get_ergebnis(self):
+        self.ergebnis = Ergebnis([w.getAugenzahl() for w in self.spieler.getSpielerwuerfel()])
         return self.ergebnis
 
-    def set_Ergebnis(self, ergebnis):
+    def set_ergebnis(self, ergebnis):
         self.ergebnis = ergebnis
 
-        #if ergebnis.isEndergebnis:
-            #self.ergebnis.save()
+        # if ergebnis.isEndergebnis:
+        # self.ergebnis.save
